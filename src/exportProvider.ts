@@ -2,6 +2,7 @@
 import * as Url from 'url';
 import * as fs from 'fs';
 import * as path from 'path';
+import * as mime from 'mime-types';
 
 const gltfMimeTypes: any = {
     'image/png' : ['png'],
@@ -61,8 +62,8 @@ function dataFromUri(buffer: any, basePath: string) : { mimeType: string, buffer
         }
     }
     else {
-        const fullUri = decodeURI(Url.resolve(basePath, buffer.uri));
-        let mimeType = guessMimeType(fullUri)
+        const fullUri = Url.resolve(basePath, buffer.uri);
+        let mimeType =  mime.lookup(fullUri).toString();
         return { mimeType: mimeType, buffer: fs.readFileSync(fullUri) };
     }
 }
